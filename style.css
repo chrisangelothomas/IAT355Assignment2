@@ -1,0 +1,235 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'helvetica', sans-serif;
+    line-height: 1.6;
+    color: white;
+    background-color: black;
+}
+
+/* Header and Navigation */
+header {
+    background-color: black;
+    color: white;
+    padding: 1rem 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Main content */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background-color: black;
+    min-height: calc(100vh - 8rem);
+}
+
+/* Typography */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem 0;
+    color: white;
+}
+
+h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Hero section */
+.hero {
+    text-align: center;
+    padding: 2rem 0;
+    background-color: black;
+    color: white;
+    margin: -2rem -1rem 2rem -1rem;
+
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.intro {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Sections */
+section {
+    margin-bottom: 2rem;
+}
+
+.education-item,
+.experience-item {
+    background-color: black;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Skills */
+.skills ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    list-style: none;
+}
+
+.skills li {
+    background-color: white;
+    color: black;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Contact */
+.contact a {
+    color: white;
+    text-decoration: none;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+/* Visualizations */
+.visualization {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background-color: black;
+}
+
+#data-viz,
+#creative-art {
+    width: 100%;
+    height: 400px;
+    background-color: black;
+    margin-top: 1rem;
+}
+
+/* Footer */
+footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid white;
+}
+
+/* Responsive design */
+@media (min-width: 1200px) {
+    main {
+        max-width: 1000px;
+        padding: 3rem 2rem;
+    }
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    h2 {
+        font-size: 2.2rem;
+    }
+    
+    .hero {
+        padding: 3rem 0;
+        margin: -3rem -2rem 3rem -2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.4rem;
+    }
+    
+    .intro {
+        font-size: 1.3rem;
+        max-width: 800px;
+    }
+    
+    .skills ul {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .education-item,
+    .experience-item {
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .visualization {
+        padding: 2rem;
+        margin-bottom: 4rem;
+    }
+    
+    #data-viz,
+    #creative-art {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    main {
+        padding: 1rem 0.5rem;
+    }
+    
+    .hero {
+        margin: -1rem -0.5rem 1rem -0.5rem;
+        padding: 1.5rem 0;
+    }
+    
+    .skills ul {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}

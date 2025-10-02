@@ -1,4 +1,4 @@
-// Simple Data Visualizations using Chart.js
+// Simple Data Visualizations using SVG
 document.addEventListener('DOMContentLoaded', function() {
     // Survey data
     const data = [
@@ -64,62 +64,102 @@ function createBarChart(data) {
         }
     });
 
-    // Convert to Chart.js format
+    // Convert to chart format
     const labels = Object.keys(taylorSwiftCounts).sort((a, b) => parseInt(a) - parseInt(b));
     const counts = labels.map(label => taylorSwiftCounts[label]);
 
-    // Create canvas element
-    const canvas = document.createElement('canvas');
-    canvas.id = 'taylorSwiftChart';
-    canvas.width = 600;
-    canvas.height = 300;
-    container.appendChild(canvas);
+    // SVG dimensions
+    const width = 600;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 60, left: 60 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
 
-    // Create chart
-    const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Count',
-                data: counts,
-                backgroundColor: [
-                    '#FFFFFF', '#FFF4E6', '#FFE0B3', '#FFCC80', 
-                    '#FFB74D', '#FF9800', '#F57C00', '#E65100', '#D84315'
-                ],
-                borderColor: '#333',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Taylor Swift Hate Level Distribution'
-                },
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Taylor Swift Hate Level'
-                    }
-                }
-            }
-        }
+    // Create SVG element
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    container.appendChild(svg);
+
+    // Colors array
+    const colors = ['#FFFFFF', '#FFF4E6', '#FFE0B3', '#FFCC80', '#FFB74D', '#FF9800', '#F57C00', '#E65100', '#D84315'];
+
+    // Calculate scales
+    const maxCount = Math.max(...counts);
+    const barWidth = chartWidth / labels.length;
+    const scaleY = chartHeight / maxCount;
+
+    // Create bars
+    labels.forEach((label, index) => {
+        const barHeight = counts[index] * scaleY;
+        const x = margin.left + index * barWidth;
+        const y = margin.top + chartHeight - barHeight;
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', barWidth - 2);
+        rect.setAttribute('height', barHeight);
+        rect.setAttribute('fill', colors[index] || '#FF9800');
+        rect.setAttribute('stroke', '#333');
+        rect.setAttribute('stroke-width', '1');
+        svg.appendChild(rect);
+
+        // Add labels
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', x + barWidth / 2);
+        text.setAttribute('y', height - margin.bottom + 15);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '12');
+        text.setAttribute('fill', '#CCCCCC');
+        text.textContent = label;
+        svg.appendChild(text);
     });
+
+    // Add Y-axis labels
+    for (let i = 0; i <= maxCount; i++) {
+        const y = margin.top + chartHeight - (i * scaleY);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', margin.left - 10);
+        text.setAttribute('y', y + 4);
+        text.setAttribute('text-anchor', 'end');
+        text.setAttribute('font-size', '12');
+        text.setAttribute('fill', '#CCCCCC');
+        text.textContent = i;
+        svg.appendChild(text);
+    }
+
+    // Add title
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    title.setAttribute('x', width / 2);
+    title.setAttribute('y', 15);
+    title.setAttribute('text-anchor', 'middle');
+    title.setAttribute('font-size', '16');
+    title.setAttribute('font-weight', 'bold');
+    title.setAttribute('fill', '#FFFFFF');
+    title.textContent = 'Taylor Swift Hate Level Distribution';
+    svg.appendChild(title);
+
+    // Add axis labels
+    const yAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    yAxisLabel.setAttribute('x', 15);
+    yAxisLabel.setAttribute('y', height / 2);
+    yAxisLabel.setAttribute('text-anchor', 'middle');
+    yAxisLabel.setAttribute('font-size', '14');
+    yAxisLabel.setAttribute('transform', `rotate(-90, 15, ${height / 2})`);
+    yAxisLabel.setAttribute('fill', '#DDDDDD');
+    yAxisLabel.textContent = 'Count';
+    svg.appendChild(yAxisLabel);
+
+    const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('y', height - 10);
+    xAxisLabel.setAttribute('text-anchor', 'middle');
+    xAxisLabel.setAttribute('font-size', '14');
+    xAxisLabel.setAttribute('fill', '#DDDDDD');
+    xAxisLabel.textContent = 'Taylor Swift Hate Level';
+    svg.appendChild(xAxisLabel);
 }
 
 function createScatterChart(data) {
@@ -157,84 +197,107 @@ function createScatterChart(data) {
         };
     });
 
-    // Create canvas element
-    const canvas = document.createElement('canvas');
-    canvas.id = 'scatterChart';
-    canvas.width = 800;
-    canvas.height = 500;
-    container.appendChild(canvas);
+    // SVG dimensions
+    const width = 800;
+    const height = 500;
+    const margin = { top: 20, right: 20, bottom: 80, left: 60 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
 
-    // Create chart
-    const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Survey Responses',
-                data: scatterData,
-                backgroundColor: scatterData.map(point => `rgba(255, 152, 0, ${point.alpha})`),
-                borderColor: scatterData.map(point => `rgba(255, 152, 0, 1)`),
-                borderWidth: 1,
-                pointRadius: scatterData.map(point => point.pointRadius)
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Tiredness Level vs Dinner Response (Point size & color intensity = Tiredness Level)'
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const point = scatterData[context.dataIndex];
-                            return [
-                                `Dinner: ${point.dinner}`,
-                                `Tiredness: ${point.y}`
-                            ];
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Dinner Response'
-                    },
-                    type: 'linear',
-                    min: -0.5,
-                    max: uniqueDinners.length - 0.5,
-                    ticks: {
-                        stepSize: 1,
-                        callback: function(value) {
-                            const index = Math.round(value);
-                            return uniqueDinners[index] || '';
-                        },
-                        maxRotation: 45,
-                        minRotation: 45,
-                        font: {
-                            size: 10
-                        }
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Tiredness Level'
-                    },
-                    min: 0,
-                    max: 10,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            }
-        }
+    // Create SVG element
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    container.appendChild(svg);
+
+    // Calculate scales
+    const xScale = chartWidth / uniqueDinners.length;
+    const yScale = chartHeight / 10;
+
+    // Create scatter points
+    scatterData.forEach((point, index) => {
+        const cx = margin.left + (point.x + 0.5) * xScale;
+        const cy = margin.top + chartHeight - (point.y * yScale);
+        
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', point.pointRadius);
+        circle.setAttribute('fill', `rgba(255, 152, 0, ${point.alpha})`);
+        circle.setAttribute('stroke', 'rgba(255, 152, 0, 1)');
+        circle.setAttribute('stroke-width', '1');
+        
+        // Add tooltip data
+        circle.setAttribute('data-dinner', point.dinner);
+        circle.setAttribute('data-tiredness', point.y);
+        
+        // Add hover effect
+        circle.addEventListener('mouseenter', function() {
+            circle.setAttribute('stroke-width', '2');
+        });
+        circle.addEventListener('mouseleave', function() {
+            circle.setAttribute('stroke-width', '1');
+        });
+        
+        svg.appendChild(circle);
     });
+
+    // Add X-axis labels
+    uniqueDinners.forEach((dinner, index) => {
+        const x = margin.left + (index + 0.5) * xScale;
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', x);
+        text.setAttribute('y', height - margin.bottom + 15);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '10');
+        text.setAttribute('transform', `rotate(45, ${x}, ${height - margin.bottom + 15})`);
+        text.setAttribute('fill', '#CCCCCC');
+        text.textContent = dinner;
+        svg.appendChild(text);
+    });
+
+    // Add Y-axis labels
+    for (let i = 0; i <= 10; i++) {
+        const y = margin.top + chartHeight - (i * yScale);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', margin.left - 10);
+        text.setAttribute('y', y + 4);
+        text.setAttribute('text-anchor', 'end');
+        text.setAttribute('font-size', '12');
+        text.setAttribute('fill', '#CCCCCC');
+        text.textContent = i;
+        svg.appendChild(text);
+    }
+
+    // Add title
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    title.setAttribute('x', width / 2);
+    title.setAttribute('y', 15);
+    title.setAttribute('text-anchor', 'middle');
+    title.setAttribute('font-size', '16');
+    title.setAttribute('font-weight', 'bold');
+    title.setAttribute('fill', '#FFFFFF');
+    title.textContent = 'Tiredness Level vs Dinner Response (Point size & color intensity = Tiredness Level)';
+    svg.appendChild(title);
+
+    // Add axis labels
+    const yAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    yAxisLabel.setAttribute('x', 15);
+    yAxisLabel.setAttribute('y', height / 2);
+    yAxisLabel.setAttribute('text-anchor', 'middle');
+    yAxisLabel.setAttribute('font-size', '14');
+    yAxisLabel.setAttribute('transform', `rotate(-90, 15, ${height / 2})`);
+    yAxisLabel.setAttribute('fill', '#DDDDDD');
+    yAxisLabel.textContent = 'Tiredness Level';
+    svg.appendChild(yAxisLabel);
+
+    const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('y', height - 20);
+    xAxisLabel.setAttribute('text-anchor', 'middle');
+    xAxisLabel.setAttribute('font-size', '14');
+    xAxisLabel.setAttribute('fill', '#DDDDDD');
+    xAxisLabel.textContent = 'Dinner Response';
+    svg.appendChild(xAxisLabel);
 }

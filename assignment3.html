@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 3 - Advanced Visualizations</title>
+    
+    <!-- Minimal CDN set -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="assignment2.html">Assignment 2</a>
+            <a href="assignment3.html" aria-current="page">Assignment 3</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section>
+            <h1>IAT355 — Assignment 3</h1>
+        </section>
+
+        <section>
+            <h2>Dataset Summary</h2>
+            <div id="summary"></div>
+        </section>
+
+        <section>
+            <h2>Vis 1 — Global Sales by Genre × Platform</h2>
+            <p class="caption" id="cap1"></p>
+            <div id="vis1"></div>
+        </section>
+
+        <section>
+            <h2>Vis 2 — Sales Over Time by Platform</h2>
+            <p class="caption" id="cap2"></p>
+            <div id="vis2"></div>
+        </section>
+
+        <section>
+            <h2>Vis 3 — Regional Sales vs Platform</h2>
+            <p class="caption" id="cap3"></p>
+            <div id="vis3"></div>
+        </section>
+
+        <section>
+            <h2>Vis 4 — Global Sales Distribution</h2>
+            <p class="caption" id="cap4"></p>
+            <div id="vis4"></div>
+        </section>
+    </main>
+
+    <script type="module" src="js/vis-a3.js"></script>
+</body>
+</html>
